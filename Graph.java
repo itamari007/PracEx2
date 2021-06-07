@@ -137,6 +137,12 @@ public class Graph {
     public static class DoublyLinkedList{
         private dllNode head;
         private dllNode tail;
+        private int dllLength = 0;
+
+        public int getDllLength(){
+            return dllLength;
+        }
+
         public void insert(Node newNode){
             dllNode newDllnode = new dllNode(newNode);
             if(head == null){
@@ -150,6 +156,7 @@ public class Graph {
                 head.setNext(newDllnode);
                 head = head.next;
             }
+            dllLength++;
         }
         private boolean hasPrev(dllNode nodeInQuestion){
             return nodeInQuestion!=null && nodeInQuestion.prev!=null;
@@ -182,6 +189,9 @@ public class Graph {
             }
             if(!prevExist && !nextExist){
                 head = tail = null;
+            }
+            if(dllLength>0){
+                dllLength--;
             }
         }
 
@@ -216,15 +226,6 @@ public class Graph {
     }
 
     public static class maxHeap{}
-
-    /**public static class nodeMapper{
-        Node node;
-        private DoublyLinkedList nodeGraphImplementation;
-        private maxHeap nodeHeapImplementation;
-        public nodeMapper(Node node){
-            this.node = node;
-        }
-    }*/
 
     /**
      * for each node: uses a pseudo-random hash function to map the id to a DLl named hashedIds
@@ -264,7 +265,7 @@ public class Graph {
             }
         }
         private int hash(int id){
-            return ((a*id + b)%p)%m;
+            return Math.floorMod(Math.floorMod((a*id + b),p),m);
         }
     }
 }
