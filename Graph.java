@@ -10,6 +10,8 @@ You are allowed to add classes, methods, and members as required.
  *
  */
 public class Graph {
+    private static int p = (int) Math.pow(10, 9) + 9;
+    private int N;
     /**
      * Initializes the graph on a given set of nodes. The created graph is empty, i.e. it has no edges.
      * You may assume that the ids of distinct nodes are distinct.
@@ -17,8 +19,10 @@ public class Graph {
      * @param nodes - an array of node objects
      */
     public Graph(Node [] nodes){
-        //TODO: implement this method.
+        this.N = nodes.length;
     }
+
+
 
     /**
      * This method returns the node in the graph with the maximum neighborhood weight.
