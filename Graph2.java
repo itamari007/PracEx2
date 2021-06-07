@@ -12,21 +12,23 @@ import java.util.concurrent.ThreadLocalRandom;
  * vertex deletion.
  *
  */
-public class Graph {
+public class Graph2 {
     private static int p = (int) Math.pow(10, 9) + 9;
     private int N;
     int n;
     int  m;
+    MyHashTable<Node> hTable;
     /**
      * Initializes the graph on a given set of nodes. The created graph is empty, i.e. it has no edges.
      * You may assume that the ids of distinct nodes are distinct.
      *
      * @param nodes - an array of node objects
      */
-    public Graph(Node [] nodes){
+    public Graph2(Node [] nodes){
         this.N = nodes.length;
         this.n = N;
         this.m = 0;
+        hTable = new MyHashTable(p,nodes);
     }
 
 
@@ -78,24 +80,24 @@ public class Graph {
         //TODO: implement this method.
         return false;
     }
-	
-	/**
-	 * Returns the number of nodes currently in the graph.
-	 * @return the number of nodes in the graph.
-	 */
-	public int getNumNodes(){
-		//TODO: implement this method.
-		return 0;
-	}
-	
-	/**
-	 * Returns the number of edges currently in the graph.
-	 * @return the number of edges currently in the graph.
-	 */
-	public int getNumEdges(){
-		//TODO: implement this method.
-		return 0;
-	}
+
+    /**
+     * Returns the number of nodes currently in the graph.
+     * @return the number of nodes in the graph.
+     */
+    public int getNumNodes(){
+        //TODO: implement this method.
+        return 0;
+    }
+
+    /**
+     * Returns the number of edges currently in the graph.
+     * @return the number of edges currently in the graph.
+     */
+    public int getNumEdges(){
+        //TODO: implement this method.
+        return 0;
+    }
 
     /**
      * This class represents a node in the graph.
@@ -132,11 +134,11 @@ public class Graph {
         }
     }
 
-    public static class DoublyLinkedList{
-        private dllNode head;
-        private dllNode tail;
-        public void insert(Node newNode){
-            dllNode newDllnode = new dllNode(newNode);
+    public static class DoublyLinkedList<T>{
+        private dllNode<T> head;
+        private dllNode<T> tail;
+        public void insert(T newNode){
+            dllNode newDllnode = new dllNode<T>(newNode);
             if(head == null){
                 head = newDllnode;
             }
@@ -184,12 +186,12 @@ public class Graph {
         }
 
 
-        private class dllNode{
-            private Node value;
-            private dllNode prev;
-            private dllNode next;
-            private dllNode connectedVertex;
-            private dllNode(Node value){
+        private class dllNode<T>{
+            private T value;
+            private dllNode<T> prev;
+            private dllNode<T> next;
+            private dllNode<T> connectedVertex;
+            private dllNode(T value){
                 this.value = value;
             }
             private void setPrev(dllNode prev){
@@ -212,40 +214,32 @@ public class Graph {
 
     public static class maxHeap{}
 
-    /**public static class nodeMapper{
-        Node node;
-        private DoublyLinkedList nodeGraphImplementation;
-        private maxHeap nodeHeapImplementation;
-        public nodeMapper(Node node){
-            this.node = node;
-        }
-    }*/
-
     /**
      * for each node: uses a pseudo-random hash function to map the id to a DLl named hashedIds
      * Next, when the id have been mapped to a smaller array, hashedIds[index],
-     * the smaller array will point to an object of type nodeMapper, which upon request will
-     * provide either the graph implementation of node(a DLL of its neighbours in the graph),
-     * or the maxHeap implementation(who is his parent and who are his children).
+     * the smaller array will point to an object of type Node, which upon request will
+     * provide either the graph implementation of said node(a DLL of its neighbours in the graph),
+     * or the maxHeap implementation(who his parent is, and who his children are).
+     *
+     * @pre: T is an object with unique identifier named id
      */
-    public static class hashTable{
+    public static class MyHashTable<T>{
         int p;
         int m;
-        DoublyLinkedList[] hashedIds;
+        DoublyLinkedList<T>[] hashedIds;
         private int a=-1;
         private int b=-1;
-        public hashTable(int size, Node[] nodes){
+        public MyHashTable(int size, T[] objectsWithIds){
             this.p=size;
-            this.m = nodes.length;
+            this.m = objectsWithIds.length;
             hashedIds = new DoublyLinkedList[p];
             setHashFunctionParameters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
         }
-        private void populateTable(Node[] nodes){
-            for (Node node: nodes
-                 ) {
-                int identifier = node.id;
+        private void populateTable(int[] indexes, T item){
+            for (int identifier: indexes
+            ) {
                 int hashedId = hash(identifier);
-                hashedIds[hashedId].insert(node);
+                hashedIds[hashedId].insert(item);
             }
         }
         private void setHashFunctionParameters(int a, int b){
