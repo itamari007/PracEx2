@@ -234,13 +234,21 @@ public class Graph {
         DoublyLinkedList[] hashedIds;
         private int a=-1;
         private int b=-1;
-        public hashTable(int size, int uSize){
+        public hashTable(int size, Node[] nodes){
             this.p=size;
-            this.m = uSize;
+            this.m = nodes.length;
             hashedIds = new DoublyLinkedList[p];
-            setHashFunctionParamaters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
+            setHashFunctionParameters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
         }
-        private void setHashFunctionParamaters(int a, int b){
+        private void populateTable(Node[] nodes){
+            for (Node node: nodes
+                 ) {
+                int identifier = node.id;
+                int hashedId = hash(identifier);
+                hashedIds[hashedId].insert(node);
+            }
+        }
+        private void setHashFunctionParameters(int a, int b){
             if(this.a==-1&& this.b == -1){
                 this.a = a;
                 this.b = b;
