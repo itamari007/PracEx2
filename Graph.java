@@ -17,6 +17,7 @@ public class Graph {
     private int N;
     int n;
     int  m;
+    MyHashtable myTable;
     /**
      * Initializes the graph on a given set of nodes. The created graph is empty, i.e. it has no edges.
      * You may assume that the ids of distinct nodes are distinct.
@@ -27,6 +28,7 @@ public class Graph {
         this.N = nodes.length;
         this.n = N;
         this.m = 0;
+        myTable = new MyHashtable(p,nodes);
     }
 
 
@@ -207,6 +209,9 @@ public class Graph {
             private dllNode getConnectedVertex(){
                 return connectedVertex;
             }
+            private Node getValue(){
+                return value;
+            }
         }
     }
 
@@ -228,23 +233,27 @@ public class Graph {
      * provide either the graph implementation of node(a DLL of its neighbours in the graph),
      * or the maxHeap implementation(who is his parent and who are his children).
      */
-    public static class hashTable{
+    public static class MyHashtable{
         int p;
         int m;
         DoublyLinkedList[] hashedIds;
         private int a=-1;
         private int b=-1;
-        public hashTable(int size, Node[] nodes){
+        public MyHashtable(int size, Node[] nodes){
             this.p=size;
             this.m = nodes.length;
             hashedIds = new DoublyLinkedList[p];
             setHashFunctionParameters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
+            populateTable(nodes);
         }
         private void populateTable(Node[] nodes){
             for (Node node: nodes
                  ) {
                 int identifier = node.id;
                 int hashedId = hash(identifier);
+                if(hashedIds[hashedId]==null){
+                    hashedIds[hashedId] = new DoublyLinkedList();
+                }
                 hashedIds[hashedId].insert(node);
             }
         }

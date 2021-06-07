@@ -9,12 +9,19 @@ public class Tester {
         }
         int x = 5;
          */
-        int p = 1000000009;
-        Graph2.Node[] nodes = new Graph2.Node[p];
+        int p = 1009;
+        Graph.Node[] nodes = new Graph.Node[p];
         for(int i = 1; i <= p; i++){
-            nodes[i-1] = new Graph2.Node(i, ThreadLocalRandom.current().nextInt(1,p));
+            nodes[i-1] = new Graph.Node(i, ThreadLocalRandom.current().nextInt(1,p));
         }
-        Graph2 g2 = new Graph2(nodes);
-        int x =100;
+        Graph g = new Graph(nodes);
+        Graph.DoublyLinkedList example;
+        for (Graph.DoublyLinkedList d: g.myTable.hashedIds
+             ) {
+            if(d!=null){
+                example = d;
+            }
+        }
+        int x =5;
     }
 }
