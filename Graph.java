@@ -94,14 +94,18 @@ public class Graph {
      * This class represents a node in the graph.
      */
     public static class Node{
+        private int id;
+        private int weight;
+        private int neighbourhoodWeight;
         /**
          * Creates a new node object, given its id and its weight.
          * @param id - the id of the node.
          * @param weight - the weight of the node.
          */
         public Node(int id, int weight){
-            //TODO: implement this method.
-            return;
+            this.id = id;
+            this.weight = weight;
+            this.neighbourhoodWeight = weight;
         }
 
         /**
@@ -109,8 +113,7 @@ public class Graph {
          * @return the id of the node.
          */
         public int getId(){
-            //TODO: implement this method.
-            return 0;
+            return id;
         }
 
         /**
@@ -118,10 +121,89 @@ public class Graph {
          * @return the weight of the node.
          */
         public int getWeight(){
-            //TODO: implement this method.
-            return 0;
+            return weight;
+        }
+    }
+
+    public static class DoublyLinkedList{
+        private dllNode head;
+        private dllNode tail;
+        public void insert(Node newNode){
+            dllNode newDllnode = new dllNode(newNode);
+            if(head == null){
+                head = newDllnode;
+            }
+            if(tail == null){
+                tail = newDllnode;
+            }
+            else{
+                newDllnode.setPrev(head);
+                head.setNext(newDllnode);
+                head = head.next;
+            }
+        }
+        private boolean hasPrev(dllNode nodeInQuestion){
+            return nodeInQuestion!=null && nodeInQuestion.prev!=null;
+        }
+        private boolean hasNext(dllNode nodeInQuestion){
+            return nodeInQuestion!=null && nodeInQuestion.next!=null;
+        }
+        public void delete(dllNode condemned){
+            boolean prevExist = hasPrev(condemned);
+            boolean nextExist = hasNext(condemned);
+            dllNode X = null;
+            dllNode Z = null;
+            if(prevExist){
+                X = condemned.prev;
+                condemned.prev = null;
+            }
+            if(nextExist){
+                Z = condemned.next;
+                condemned.next = null;
+                if(condemned == head){
+                    head = Z;
+                }
+            }
+            /*
+                    X-Y-Z -> X-Z
+            * */
+            if(prevExist && nextExist && X!=null && Z!=null){
+                X.setNext(Z);
+                Z.setPrev(X);
+            }
+            if(!prevExist && !nextExist){
+                head = tail = null;
+            }
+        }
+
+
+        private class dllNode{
+            private Node value;
+            private dllNode prev;
+            private dllNode next;
+            private dllNode connectedVertex;
+            private dllNode(Node value){
+                this.value = value;
+            }
+            private void setPrev(dllNode prev){
+                this.prev = prev;
+            }
+            private void setNext(dllNode next){
+                this.next = next;
+            }
+            private boolean isConnected(){
+                return connectedVertex!=null;
+            }
+            private void connectToVertex(dllNode vertex){
+                connectedVertex = vertex;
+            }
+            private dllNode getConnectedVertex(){
+                return connectedVertex;
+            }
         }
     }
 }
+
+
 
 
