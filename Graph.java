@@ -4,6 +4,9 @@ You are required to implement the methods of this skeleton file according to the
 You are allowed to add classes, methods, and members as required.
  */
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * This class represents a graph that efficiently maintains the heaviest neighborhood over edge addition and
  * vertex deletion.
@@ -12,6 +15,8 @@ You are allowed to add classes, methods, and members as required.
 public class Graph {
     private static int p = (int) Math.pow(10, 9) + 9;
     private int N;
+    int n;
+    int  m;
     /**
      * Initializes the graph on a given set of nodes. The created graph is empty, i.e. it has no edges.
      * You may assume that the ids of distinct nodes are distinct.
@@ -20,6 +25,8 @@ public class Graph {
      */
     public Graph(Node [] nodes){
         this.N = nodes.length;
+        this.n = N;
+        this.m = 0;
     }
 
 
@@ -200,6 +207,47 @@ public class Graph {
             private dllNode getConnectedVertex(){
                 return connectedVertex;
             }
+        }
+    }
+
+    public static class maxHeap{}
+
+    public static class nodeMapper{
+        Node node;
+        private DoublyLinkedList nodeGraphImplementation;
+        private maxHeap nodeHeapImplementation;
+        public nodeMapper(Node node){
+            this.node = node;
+        }
+    }
+
+    /**
+     * for each node: uses a pseudo-random hash function to map the id to a DLl named hashedIds
+     * Next, when the id have been mapped to a smaller array, hashedIds[index],
+     * the smaller array will point to an object of type nodeMapper, which upon request will
+     * provide either the graph implementation of node(a DLL of its neighbours in the graph),
+     * or the maxHeap implementation(who is his parent and who are his children).
+     */
+    public static class hashTable{
+        int p;
+        int m;
+        DoublyLinkedList[] hashedIds;
+        private int a=-1;
+        private int b=-1;
+        public hashTable(int size, int uSize){
+            this.p=size;
+            this.m = uSize;
+            hashedIds = new DoublyLinkedList[p];
+            setHashFunctionParamaters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
+        }
+        private void setHashFunctionParamaters(int a, int b){
+            if(this.a==-1&& this.b == -1){
+                this.a = a;
+                this.b = b;
+            }
+        }
+        private int hash(int id){
+            return ((a*id + b)%p)%m;
         }
     }
 }
