@@ -181,6 +181,17 @@ public class Graph {
             return dllLength;
         }
 
+        public Node retrieveNode(int id){
+            dllNode cursor = tail;
+            while(cursor!=null){
+                if(cursor.value!=null && cursor.value.id==id){
+                    return cursor.value;
+                }
+                cursor = cursor.next;
+            }
+            return null;
+        }
+
         public void insert(Node newNode){
             dllNode newDllnode = new dllNode(newNode);
             if(head == null){
@@ -373,6 +384,16 @@ public class Graph {
         }
         private int hash(int id){
             return Math.floorMod(Math.floorMod((a*id + b),p),m);
+        }
+
+        /**
+         * Given
+         * @param id
+         * @return the instance of Node with Node.id == id
+         */
+        private Node accessNode(int id){
+            DoublyLinkedList relevantDll = hashedIds[hash(id)];
+            return relevantDll.retrieveNode(id);
         }
     }
     private class AdjacencyArray{
