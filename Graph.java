@@ -17,6 +17,8 @@ public class Graph {
     private int N;
     int n;
     int  m;
+    private static String ADD = "ADD";
+    private static String REMOVE = "REMOVE";
     MyHashtable myTable;
     /**
      * Initializes the graph on a given set of nodes. The created graph is empty, i.e. it has no edges.
@@ -99,6 +101,18 @@ public class Graph {
 		return 0;
 	}
 
+	public static class Neighbour extends Node{
+	    private Neighbour connectedVertex = null;
+	    public Neighbour(int id, int weight){
+	        super(id, weight);
+        }
+        public void connect(Node node){
+	        Neighbour otherVertex = new Neighbour(node.id, node.weight);
+	        connectedVertex = otherVertex;
+	        otherVertex.connectedVertex = this;
+        }
+    }
+
     /**
      * This class represents a node in the graph.
      */
@@ -106,7 +120,7 @@ public class Graph {
         private int id;
         private int weight;
         private int neighbourhoodWeight;
-        private DoublyLinkedList neighbours;
+        private DoublyLinkedList neighbourhood;
         private int heapIndex;
         /**
          * Creates a new node object, given its id and its weight.
@@ -117,7 +131,11 @@ public class Graph {
             this.id = id;
             this.weight = weight;
             this.neighbourhoodWeight = weight;
-            this.neighbours = new DoublyLinkedList();
+            this.neighbourhood = new DoublyLinkedList();
+        }
+        private void addNeighbour(Neighbour buddy){
+            neighbourhood.insert(buddy);
+            buddy.connect(this);
         }
 
         /**
@@ -134,6 +152,15 @@ public class Graph {
          */
         public int getWeight(){
             return weight;
+        }
+
+        private void updateNeighbourhoodWeight(String op,Node nodeWeightToAddOrRemove){
+            if(op==REMOVE){
+                this.neighbourhoodWeight -= nodeWeightToAddOrRemove.getWeight();
+            }
+            if(op==ADD){
+                this.neighbourhoodWeight += nodeWeightToAddOrRemove.getWeight();
+            }
         }
     }
 
