@@ -254,19 +254,50 @@ public class Graph {
          * @param changedNode
          * input: a node whose B weight has just been changed, and updates the heap accordingly.
          */
-        public void update(Node changedNode){
+        public void heapifyUp(Node changedNode){
             int index = changedNode.heapIndex;
             Node parent = heapArray[(index-1)/2];
-                while (parent.neighbourhoodWeight < changedNode.neighbourhoodWeight){
-                    int parentIndex = parent.heapIndex;
-                    index = changedNode.heapIndex;
-                    changedNode.heapIndex = parentIndex;
-                    parent.heapIndex = index;
-                    heapArray[index] = parent;
-                    heapArray[parentIndex] = changedNode;
-                    parentIndex = (parentIndex-1)/2;
-                    parent = heapArray[parentIndex];
+            while (parent.neighbourhoodWeight < changedNode.neighbourhoodWeight){
+                int parentIndex = parent.heapIndex;
+                index = changedNode.heapIndex;
+                changedNode.heapIndex = parentIndex;
+                parent.heapIndex = index;
+                heapArray[index] = parent;
+                heapArray[parentIndex] = changedNode;
+                parentIndex = (parentIndex-1)/2;
+                parent = heapArray[parentIndex];
+            }
+        }
+        public void heapifyDown(Node changedNode){
+            int index = changedNode.heapIndex;
+            Node highestNW = changedNode;
+            int rightSonIndex = (index*2) + 2;
+            int leftSonIndex = (index*2) + 1;
+            if( rightSonIndex < lastIndex){
+                if(highestNW.neighbourhoodWeight < heapArray[rightSonIndex].neighbourhoodWeight){
+                    highestNW = heapArray[rightSonIndex];
+                    /**
+                     * in this case, the right son exist and his neighborhoodWeight is larger then changedNode
+                     */
                 }
+            }
+            if(leftSonIndex < lastIndex){
+                if(highestNW.neighbourhoodWeight < heapArray[leftSonIndex].neighbourhoodWeight){
+                    highestNW = heapArray[leftSonIndex];
+                    /**
+                     * in this case, the left son exist and his neighborhoodWeight is larger then changedNode AND rightSon
+                     */
+                }
+            }
+            if(changedNode!=highestNW){
+                int newPlaceForChangedNode = highestNW.heapIndex;
+                int oldPlaceOfChangedNode = changedNode.heapIndex;
+                changedNode.heapIndex = newPlaceForChangedNode;
+                heapArray[newPlaceForChangedNode] = changedNode;
+                highestNW.heapIndex = oldPlaceOfChangedNode;
+                heapArray[oldPlaceOfChangedNode] = highestNW;
+                heapifyDown(changedNode);
+            }
         }
     }
 
