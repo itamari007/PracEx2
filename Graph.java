@@ -106,6 +106,7 @@ public class Graph {
         private int id;
         private int weight;
         private int neighbourhoodWeight;
+        //private AdjacencyArray adjacentVertices;
         /**
          * Creates a new node object, given its id and its weight.
          * @param id - the id of the node.
@@ -243,7 +244,7 @@ public class Graph {
         public MyHashtable(int size, Node[] nodes){
             this.p=size;
             this.m = nodes.length;
-            hashedIds = new DoublyLinkedList[p];
+            hashedIds = new DoublyLinkedList[m];
             setHashFunctionParameters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
             populateTable(nodes);
         }
@@ -266,6 +267,19 @@ public class Graph {
         }
         private int hash(int id){
             return Math.floorMod(Math.floorMod((a*id + b),p),m);
+        }
+    }
+    private class AdjacencyArray{
+        private DoublyLinkedList adjacentVertices;
+        private int neighboursCcount = 0;
+        public AdjacencyArray(){
+            adjacentVertices = new DoublyLinkedList();
+        }
+        public int getNeighboursCcount(){
+            return neighboursCcount;
+        }
+        public void connectToVertex(Node vertex){
+            adjacentVertices.insert(vertex);
         }
     }
 }
