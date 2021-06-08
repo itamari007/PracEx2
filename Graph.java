@@ -106,7 +106,8 @@ public class Graph {
         private int id;
         private int weight;
         private int neighbourhoodWeight;
-        //private AdjacencyArray adjacentVertices;
+        private DoublyLinkedList neighbours;
+        private int heapIndex;
         /**
          * Creates a new node object, given its id and its weight.
          * @param id - the id of the node.
@@ -116,6 +117,7 @@ public class Graph {
             this.id = id;
             this.weight = weight;
             this.neighbourhoodWeight = weight;
+            this.neighbours = new DoublyLinkedList();
         }
 
         /**
@@ -166,6 +168,11 @@ public class Graph {
             return nodeInQuestion!=null && nodeInQuestion.next!=null;
         }
         public void delete(dllNode condemned){
+            /**
+             * Will be used both for deleting a node from the graph, and to delete it from all of
+             * its neighbour's adjacency lists.
+             */
+
             boolean prevExist = hasPrev(condemned);
             boolean nextExist = hasNext(condemned);
             dllNode X = null;
@@ -226,7 +233,42 @@ public class Graph {
         }
     }
 
-    public static class maxHeap{}
+    public static class MaxHeap{
+        private int N;
+        private Node[] heapArray;
+        private int lastIndex;
+        public MaxHeap(int N,Node[] nodes){
+            this.N = N;
+            heapArray = nodes;
+            this.lastIndex = heapArray.length-1;
+        }
+
+        public void delete(Node tBD){
+            heapArray[tBD.heapIndex] = heapArray[lastIndex];
+            heapArray[lastIndex] = null;
+            lastIndex--;
+        }
+
+        /**
+         *
+         * @param changedNode
+         * input: a node whose B weight has just been changed, and updates the heap accordingly.
+         */
+        public void update(Node changedNode){
+            int index = changedNode.heapIndex;
+            Node parent = heapArray[(index-1)/2];
+                while (parent.neighbourhoodWeight < changedNode.neighbourhoodWeight){
+                    int parentIndex = parent.heapIndex;
+                    index = changedNode.heapIndex;
+                    changedNode.heapIndex = parentIndex;
+                    parent.heapIndex = index;
+                    heapArray[index] = parent;
+                    heapArray[parentIndex] = changedNode;
+                    parentIndex = (parentIndex-1)/2;
+                    parent = heapArray[parentIndex];
+                }
+        }
+    }
 
     /**
      * for each node: uses a pseudo-random hash function to map the id to a DLl named hashedIds
