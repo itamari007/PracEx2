@@ -244,16 +244,14 @@ public class Graph {
         }
 
         public void delete(Node tBD){
+            heapArray[lastIndex].heapIndex = tBD.heapIndex;
             heapArray[tBD.heapIndex] = heapArray[lastIndex];
             heapArray[lastIndex] = null;
             lastIndex--;
+            heapifyDown(heapArray[tBD.heapIndex]);
         }
 
-        /**
-         *
-         * @param changedNode
-         * input: a node whose B weight has just been changed, and updates the heap accordingly.
-         */
+
         public void heapifyUp(Node changedNode){
             int index = changedNode.heapIndex;
             Node parent = heapArray[(index-1)/2];
