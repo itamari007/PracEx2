@@ -101,15 +101,23 @@ public class Graph {
 		return 0;
 	}
 
+    /**
+     * Neighbour signifies a node within another node's neighbourhood DoublyLinkedList.
+     * Used for having a direct connection between 2 vertices u,v who are connected via an edge e,
+     * i.e: e=(u,v) ∈ E
+     */
 	public static class Neighbour extends Node{
 	    private Neighbour connectedVertex = null;
-	    public Neighbour(int id, int weight){
-	        super(id, weight);
+	    private Node origialNodeRef = null;
+	    public Neighbour(Node node){
+	        super(node.id, node.weight);
+	        origialNodeRef = node;
         }
         public void connect(Node node){
-	        Neighbour otherVertex = new Neighbour(node.id, node.weight);
+	        Neighbour otherVertex = new Neighbour(node);
 	        connectedVertex = otherVertex;
 	        otherVertex.connectedVertex = this;
+	        origialNodeRef.neighbourhood.insert(node);
         }
     }
 
@@ -133,7 +141,7 @@ public class Graph {
             this.neighbourhoodWeight = weight;
             this.neighbourhood = new DoublyLinkedList();
         }
-        private void addNeighbour(Neighbour buddy){
+        protected void addNeighbour(Neighbour buddy){
             neighbourhood.insert(buddy);
             buddy.connect(this);
         }
