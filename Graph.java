@@ -20,6 +20,7 @@ public class Graph {
     private static String ADD = "ADD";
     private static String REMOVE = "REMOVE";
     MyHashtable myTable;
+    MaxHeap myMaxHeap;
     /**
      * Initializes the graph on a given set of nodes. The created graph is empty, i.e. it has no edges.
      * You may assume that the ids of distinct nodes are distinct.
@@ -31,6 +32,7 @@ public class Graph {
         this.n = N;
         this.m = 0;
         myTable = new MyHashtable(p,nodes);
+        myMaxHeap = new MaxHeap(N,nodes);
     }
 
 
@@ -69,7 +71,18 @@ public class Graph {
      */
     public boolean addEdge(int node1_id, int node2_id){
         //TODO: implement this method.
-        return false;
+        if(node1_id==node2_id){
+            return false;
+        }
+        Node n1 = myTable.accessNode(node1_id);
+        Node n2 = myTable.accessNode(node2_id);
+        if(n1==null || n2==null){
+            return false;
+        }
+        n1.addNeighbour(new Neighbour(n2));
+        myMaxHeap.heapifyUp(n1);
+        myMaxHeap.heapifyUp(n2);
+        return true;
     }
 
     /**
@@ -144,6 +157,7 @@ public class Graph {
         protected void addNeighbour(Neighbour buddy){
             neighbourhood.insert(buddy);
             buddy.connect(this);
+            updateNeighbourhoodWeight(ADD,buddy);
         }
 
         /**
@@ -162,12 +176,20 @@ public class Graph {
             return weight;
         }
 
+        /**
+         * Called when an edge e = (u,v) is added. Updates both node's neighbourhood weight value.
+         * @param op indicates if changed occurs due to removal of a node from the graph(REMOVE),
+         *           or if a new edge was created(ADD).
+         * @param nodeWeightToAddOrRemove - self explanatory
+         */
         private void updateNeighbourhoodWeight(String op,Node nodeWeightToAddOrRemove){
             if(op==REMOVE){
                 this.neighbourhoodWeight -= nodeWeightToAddOrRemove.getWeight();
+                nodeWeightToAddOrRemove.neighbourhoodWeight-=weight;
             }
             if(op==ADD){
                 this.neighbourhoodWeight += nodeWeightToAddOrRemove.getWeight();
+                nodeWeightToAddOrRemove.neighbourhoodWeight += weight;
             }
         }
     }
