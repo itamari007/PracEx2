@@ -85,6 +85,8 @@ public class Graph {
         return true;
     }
 
+
+
     /**
      * Given the id of a node in the graph, deletes the node of that id from the graph, if it exists.
      *
@@ -309,6 +311,24 @@ public class Graph {
             heapArray = nodes;
             this.lastIndex = heapArray.length-1;
             setHeapIndexes();
+            findMaxAndSwap();
+        }
+
+        private void findMaxAndSwap(){
+            Node tempMaxNode = heapArray[0];
+            int tempMax = tempMaxNode.neighbourhoodWeight;
+            int tempMaxIndex = 0;
+            for(int i =1; i< heapArray.length; i++){
+                if(heapArray[i].neighbourhoodWeight > tempMax){
+                    tempMax = heapArray[i].neighbourhoodWeight;
+                    tempMaxIndex = i;
+                }
+            }
+            Node actualMaxNode = heapArray[tempMaxIndex];
+            heapArray[0].heapIndex = tempMaxIndex;
+            heapArray[tempMaxIndex] = heapArray[0];
+            actualMaxNode.heapIndex = 0;
+            heapArray[0] = actualMaxNode;
         }
 
         private void setHeapIndexes(){
