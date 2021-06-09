@@ -34,6 +34,8 @@ public class Tester {
         g.addEdge(4,5);
         g.addEdge(6,7);
         g.addEdge(2,5);
-        int x  = 5;
-    }
+        Graph.Node n = g.maxNeighborhoodWeight();
+        int x  = g.getNeighborhoodWeight(5);
+        int y = 100;
+  }
 }

@@ -43,7 +43,9 @@ public class Graph {
      * @return a Node object representing the correct node. If there is no node in the graph, returns 'null'.
      */
     public Node maxNeighborhoodWeight(){
-        //TODO: implement this method.
+        if (myMaxHeap.heapArray[0]!=null){
+            return myMaxHeap.heapArray[0];
+        }
         return null;
     }
 
@@ -55,8 +57,11 @@ public class Graph {
      * Otherwise, the function returns -1.
      */
     public int getNeighborhoodWeight(int node_id){
-        //TODO: implement this method.
-        return 0;
+        Node n = myTable.accessNode(node_id);
+        if(n!=null){
+            return n.neighbourhoodWeight;
+        }
+        return -1;
     }
 
     /**
@@ -82,6 +87,7 @@ public class Graph {
         n1.addNeighbour(new Neighbour(n2));
         myMaxHeap.heapifyUp(n1);
         myMaxHeap.heapifyUp(n2);
+        m++;
         return true;
     }
 
@@ -103,8 +109,7 @@ public class Graph {
 	 * @return the number of nodes in the graph.
 	 */
 	public int getNumNodes(){
-		//TODO: implement this method.
-		return 0;
+		return n;
 	}
 	
 	/**
@@ -112,8 +117,7 @@ public class Graph {
 	 * @return the number of edges currently in the graph.
 	 */
 	public int getNumEdges(){
-		//TODO: implement this method.
-		return 0;
+		return m;
 	}
 
     /**
@@ -191,6 +195,17 @@ public class Graph {
             }
             if(op==ADD){
                 this.neighbourhoodWeight += nodeWeightToAddOrRemove.getWeight();
+            }
+        }
+        private void disassociateFromNeighboursBecauseGonnaBeDeletedRealSoon(){
+            if(neighbourhood.tail == null){
+                return;
+            }
+            Node doorToDoor = neighbourhood.tail.value;
+            int i = 0;
+            while(i++ < neighbourhood.dllLength){
+                doorToDoor.neighbourhoodWeight -= this.weight;
+                doorToDoor.
             }
         }
     }
