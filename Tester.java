@@ -15,7 +15,7 @@ public class Tester {
             nodes[i-1] = new Graph.Node(i, ThreadLocalRandom.current().nextInt(1,p));
         }
         Graph g = new Graph(nodes);
-        System.out.println("Histogram is: ");
+        /*System.out.println("Histogram is: ");
         double sum = 0;
         double amount = 0;
         for (Graph.DoublyLinkedList d: g.myTable.hashedIds
@@ -29,6 +29,11 @@ public class Tester {
         }
         Double avg = sum/amount;
         System.out.println("avg alpha = "+avg);
-        int x =5;
+        int x =5;*/
+        g.addEdge(2,3);
+        g.addEdge(4,5);
+        g.addEdge(6,7);
+        g.addEdge(2,5);
+        int x  = 5;
     }
 }

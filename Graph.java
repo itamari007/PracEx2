@@ -121,7 +121,7 @@ public class Graph {
      */
 	public static class Neighbour extends Node{
 	    private Neighbour connectedVertex = null;
-	    private Node origialNodeRef = null;
+	    public Node origialNodeRef = null;
 	    public Neighbour(Node node){
 	        super(node.id, node.weight);
 	        origialNodeRef = node;
@@ -158,6 +158,7 @@ public class Graph {
             neighbourhood.insert(buddy);
             buddy.connect(this);
             updateNeighbourhoodWeight(ADD,buddy);
+            buddy.origialNodeRef.updateNeighbourhoodWeight(ADD,this);
         }
 
         /**
@@ -182,14 +183,12 @@ public class Graph {
          *           or if a new edge was created(ADD).
          * @param nodeWeightToAddOrRemove - self explanatory
          */
-        private void updateNeighbourhoodWeight(String op,Node nodeWeightToAddOrRemove){
+        protected void updateNeighbourhoodWeight(String op,Node nodeWeightToAddOrRemove){
             if(op==REMOVE){
                 this.neighbourhoodWeight -= nodeWeightToAddOrRemove.getWeight();
-                nodeWeightToAddOrRemove.neighbourhoodWeight-=weight;
             }
             if(op==ADD){
                 this.neighbourhoodWeight += nodeWeightToAddOrRemove.getWeight();
-                nodeWeightToAddOrRemove.neighbourhoodWeight += weight;
             }
         }
     }
@@ -309,6 +308,13 @@ public class Graph {
             this.N = N;
             heapArray = nodes;
             this.lastIndex = heapArray.length-1;
+            setHeapIndexes();
+        }
+
+        private void setHeapIndexes(){
+            for(int i =0; i< heapArray.length; i++){
+                heapArray[i].heapIndex = i;
+            }
         }
 
         public void delete(Node tBD){
