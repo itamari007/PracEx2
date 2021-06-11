@@ -118,7 +118,6 @@ public class Graph {
 	}
 	
 	/**
-	 * Returns the number of edges currently in the graph.
 	 * @return the number of edges currently in the graph.
 	 */
 	public int getNumEdges(){
@@ -208,10 +207,10 @@ public class Graph {
                 return;
             }
             Neighbour doorToDoor = (Neighbour) neighbourhood.tail.value;
-            int i = 0;
-            while(i++ < neighbourhood.dllLength){
+            while(doorToDoor.dllRef.next != null ){
                 doorToDoor.origialNodeRef.updateNeighbourhoodWeight(REMOVE,this);
                 doorToDoor.origialNodeRef.neighbourhood.delete(dllRef);
+                doorToDoor = (Neighbour) doorToDoor.dllRef.next.value;
             }
         }
     }
@@ -461,7 +460,7 @@ public class Graph {
          * @param id
          * @return the instance of Node with Node.id == id
          */
-        private Node accessNode(int id){
+        public Node accessNode(int id){
             DoublyLinkedList relevantDll = hashedIds[hash(id)];
             if(relevantDll!=null){
                 return relevantDll.retrieveNode(id);

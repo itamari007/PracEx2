@@ -32,6 +32,9 @@ public class Tester {
         System.out.println("Maximum nWeight = "+n);
         int x  = g.getNeighborhoodWeight(5);
         System.out.println("NeighborW for id: 5  is "+ x);
+        Graph.Node v2 = g.myTable.accessNode(2);
+        Graph.Node v3 = g.myTable.accessNode(3);
+        Graph.Node v5 = g.myTable.accessNode(5);
         g.deleteNode(2);
         System.out.println("Managed to delete node with id:" + 1000000 + 99 +"? "+g.deleteNode(1000000 + 99));
   }
