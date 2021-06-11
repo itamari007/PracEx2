@@ -4,6 +4,8 @@ You are required to implement the methods of this skeleton file according to the
 You are allowed to add classes, methods, and members as required.
  */
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -104,7 +106,7 @@ public class Graph {
         if(condemned == null){
             return false;
         }
-        condemned.disassociateFromNeighboursBecauseGonnaBeDeletedRealSoon();
+        condemned.disassociateFromNeighbours();
         myTable.hashedIds[myTable.hash(node_id)].delete(condemned.dllRef);
         return true;
     }
@@ -142,6 +144,7 @@ public class Graph {
 	        otherVertex.connectedVertex = this;
 	        origialNodeRef.neighbourhood.insert(connectedVertex);
         }
+
     }
 
     /**
@@ -151,7 +154,7 @@ public class Graph {
         private int id;
         private int weight;
         private int neighbourhoodWeight;
-        private DoublyLinkedList neighbourhood;
+        protected DoublyLinkedList neighbourhood;
         private int heapIndex;
         DoublyLinkedList.dllNode dllRef;
         /**
@@ -202,17 +205,20 @@ public class Graph {
                 this.neighbourhoodWeight += nodeWeightToAddOrRemove.getWeight();
             }
         }
-        private void disassociateFromNeighboursBecauseGonnaBeDeletedRealSoon(){
+        public void disassociateFromNeighbours(){
             if(neighbourhood.tail == null){
                 return;
             }
-            Neighbour doorToDoor = (Neighbour) neighbourhood.tail.value;
-            while(doorToDoor.dllRef.next != null ){
-                doorToDoor.origialNodeRef.updateNeighbourhoodWeight(REMOVE,this);
-                doorToDoor.origialNodeRef.neighbourhood.delete(dllRef);
-                doorToDoor = (Neighbour) doorToDoor.dllRef.next.value;
+            DoublyLinkedList.dllNode doorToDoor = neighbourhood.tail;
+            Neighbour doorVal = (Neighbour) doorToDoor.value;
+            while(doorToDoor != null ){
+                doorVal = (Neighbour) doorToDoor.value;
+                doorVal.origialNodeRef.updateNeighbourhoodWeight(REMOVE,this);
+                doorVal.origialNodeRef.neighbourhood.delete(dllRef);
+                doorToDoor = doorToDoor.next;
             }
         }
+
     }
 
     public static class DoublyLinkedList{
@@ -293,7 +299,7 @@ public class Graph {
         }
 
 
-        private class dllNode{
+        public class dllNode{
             private Node value;
             private dllNode prev;
             private dllNode next;
@@ -333,6 +339,17 @@ public class Graph {
             this.lastIndex = heapArray.length-1;
             setHeapIndexes();
             findMaxAndSwap();
+        }
+        //will be used only for first insertion
+        //TODO
+        private void insert(Node node){
+            int currID = node.id;
+            int currWeight = node.neighbourhoodWeight;
+            int i = 0;
+            while (heapArray[i].neighbourhoodWeight > currWeight ){
+                i++;
+            }
+
         }
 
         private void findMaxAndSwap(){
