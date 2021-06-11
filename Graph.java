@@ -141,7 +141,7 @@ public class Graph {
 	        Neighbour otherVertex = new Neighbour(node);
 	        connectedVertex = otherVertex;
 	        otherVertex.connectedVertex = this;
-	        origialNodeRef.neighbourhood.insert(node);
+	        origialNodeRef.neighbourhood.insert(connectedVertex);
         }
     }
 
@@ -207,11 +207,11 @@ public class Graph {
             if(neighbourhood.tail == null){
                 return;
             }
-            Node doorToDoor = neighbourhood.tail.value;
+            Neighbour doorToDoor = (Neighbour) neighbourhood.tail.value;
             int i = 0;
             while(i++ < neighbourhood.dllLength){
-                doorToDoor.updateNeighbourhoodWeight(REMOVE,this);
-                doorToDoor.neighbourhood.delete(dllRef);
+                doorToDoor.origialNodeRef.updateNeighbourhoodWeight(REMOVE,this);
+                doorToDoor.origialNodeRef.neighbourhood.delete(dllRef);
             }
         }
     }
@@ -463,7 +463,10 @@ public class Graph {
          */
         private Node accessNode(int id){
             DoublyLinkedList relevantDll = hashedIds[hash(id)];
-            return relevantDll.retrieveNode(id);
+            if(relevantDll!=null){
+                return relevantDll.retrieveNode(id);
+            }
+            return null;
         }
     }
 }

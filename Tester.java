@@ -3,13 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Tester {
     public static void main(String[] args){
-        /**Graph.DoublyLinkedList dll = new Graph.DoublyLinkedList();
-        for(int i = 1; i <= 10; i++){
-            dll.insert(new Graph.Node(i,i*i));
-        }
-        int x = 5;
-         */
-        int p = 1000000;
+        int p = 10;
         Graph.Node[] nodes = new Graph.Node[p];
         for(int i = 1; i <= p; i++){
             nodes[i-1] = new Graph.Node(i, ThreadLocalRandom.current().nextInt(1,p));
@@ -35,10 +29,10 @@ public class Tester {
         g.addEdge(6,7);
         g.addEdge(2,5);
         Graph.Node n = g.maxNeighborhoodWeight();
+        System.out.println("Maximum nWeight = "+n);
         int x  = g.getNeighborhoodWeight(5);
-       for(int i = 1; i<11;i++){
-           System.out.println("Managed to delete node with id:" + i +"? "+g.deleteNode(i));
-       }
+        System.out.println("NeighborW for id: 5  is "+ x);
+        g.deleteNode(2);
         System.out.println("Managed to delete node with id:" + 1000000 + 99 +"? "+g.deleteNode(1000000 + 99));
   }
 }
