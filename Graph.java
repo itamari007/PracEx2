@@ -100,8 +100,12 @@ public class Graph {
      * @return returns 'true' if the function deleted a node, otherwise returns 'false'
      */
     public boolean deleteNode(int node_id){
-        //TODO: implement this method.
-        return false;
+        Node condemned = myTable.accessNode(node_id);
+        if(condemned == null){
+            return false;
+        }
+        condemned.disassociateFromNeighboursBecauseGonnaBeDeletedRealSoon();
+        return true;
     }
 	
 	/**
@@ -149,6 +153,7 @@ public class Graph {
         private int neighbourhoodWeight;
         private DoublyLinkedList neighbourhood;
         private int heapIndex;
+        DoublyLinkedList.dllNode dllRef;
         /**
          * Creates a new node object, given its id and its weight.
          * @param id - the id of the node.
@@ -201,11 +206,11 @@ public class Graph {
             if(neighbourhood.tail == null){
                 return;
             }
-            Node doorToDoor = neighbourhood.tail.value;
+            Neighbour doorToDoor = (Neighbour) neighbourhood.tail.value;
             int i = 0;
             while(i++ < neighbourhood.dllLength){
-                doorToDoor.neighbourhoodWeight -= this.weight;
-                doorToDoor.
+                doorToDoor.updateNeighbourhoodWeight(REMOVE,this);
+                doorToDoor.origialNodeRef.neighbourhood.delete(dllRef);
             }
         }
     }
@@ -295,6 +300,7 @@ public class Graph {
             private dllNode connectedVertex;
             private dllNode(Node value){
                 this.value = value;
+                value.dllRef = this;//TODO: make sure is ok
             }
             private void setPrev(dllNode prev){
                 this.prev = prev;
@@ -457,19 +463,6 @@ public class Graph {
         private Node accessNode(int id){
             DoublyLinkedList relevantDll = hashedIds[hash(id)];
             return relevantDll.retrieveNode(id);
-        }
-    }
-    private class AdjacencyArray{
-        private DoublyLinkedList adjacentVertices;
-        private int neighboursCcount = 0;
-        public AdjacencyArray(){
-            adjacentVertices = new DoublyLinkedList();
-        }
-        public int getNeighboursCcount(){
-            return neighboursCcount;
-        }
-        public void connectToVertex(Node vertex){
-            adjacentVertices.insert(vertex);
         }
     }
 }
