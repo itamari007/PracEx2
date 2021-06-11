@@ -105,6 +105,7 @@ public class Graph {
             return false;
         }
         condemned.disassociateFromNeighboursBecauseGonnaBeDeletedRealSoon();
+        myTable.hashedIds[myTable.hash(node_id)].delete(condemned.dllRef);
         return true;
     }
 	
@@ -206,11 +207,11 @@ public class Graph {
             if(neighbourhood.tail == null){
                 return;
             }
-            Neighbour doorToDoor = (Neighbour) neighbourhood.tail.value;
+            Node doorToDoor = neighbourhood.tail.value;
             int i = 0;
             while(i++ < neighbourhood.dllLength){
                 doorToDoor.updateNeighbourhoodWeight(REMOVE,this);
-                doorToDoor.origialNodeRef.neighbourhood.delete(dllRef);
+                doorToDoor.neighbourhood.delete(dllRef);
             }
         }
     }

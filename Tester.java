@@ -36,6 +36,9 @@ public class Tester {
         g.addEdge(2,5);
         Graph.Node n = g.maxNeighborhoodWeight();
         int x  = g.getNeighborhoodWeight(5);
-        int y = 100;
+       for(int i = 1; i<11;i++){
+           System.out.println("Managed to delete node with id:" + i +"? "+g.deleteNode(i));
+       }
+        System.out.println("Managed to delete node with id:" + 1000000 + 99 +"? "+g.deleteNode(1000000 + 99));
   }
 }
