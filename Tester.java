@@ -6,7 +6,7 @@ public class Tester {
         int p = 10;
         Graph.Node[] nodes = new Graph.Node[p];
         for(int i = 1; i <= p; i++){
-            nodes[i-1] = new Graph.Node(i, ThreadLocalRandom.current().nextInt(1,p));
+            nodes[i-1] = new Graph.Node(i, i);
         }
         Graph g = new Graph(nodes);
         /*System.out.println("Histogram is: ");
@@ -26,8 +26,8 @@ public class Tester {
         int x =5;*/
         g.addEdge(2,3);
         g.addEdge(4,5);
-        g.addEdge(6,7);
-        g.addEdge(2,5);
+        //g.addEdge(6,7);
+        //g.addEdge(2,5);
         Graph.Node n = g.maxNeighborhoodWeight();
         System.out.println("Maximum nWeight = "+n);
         int x  = g.getNeighborhoodWeight(5);
@@ -35,7 +35,7 @@ public class Tester {
         Graph.Node v2 = g.myTable.accessNode(2);
         Graph.Node v3 = g.myTable.accessNode(3);
         Graph.Node v5 = g.myTable.accessNode(5);
-        g.deleteNode(2);
+        g.deleteNode(9);
         System.out.println("Managed to delete node with id:" + 1000000 + 99 +"? "+g.deleteNode(1000000 + 99));
   }
 }

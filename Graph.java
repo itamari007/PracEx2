@@ -4,8 +4,6 @@ You are required to implement the methods of this skeleton file according to the
 You are allowed to add classes, methods, and members as required.
  */
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -106,8 +104,11 @@ public class Graph {
         if(condemned == null){
             return false;
         }
-        condemned.disassociateFromNeighbours();
+        int edgesRemoved = condemned.disassociateFromNeighbours();
         myTable.hashedIds[myTable.hash(node_id)].delete(condemned.dllRef);
+        n--;
+        m-=edgesRemoved;
+        myMaxHeap.delete(condemned);
         return true;
     }
 	
@@ -205,18 +206,21 @@ public class Graph {
                 this.neighbourhoodWeight += nodeWeightToAddOrRemove.getWeight();
             }
         }
-        public void disassociateFromNeighbours(){
+        public int disassociateFromNeighbours(){
             if(neighbourhood.tail == null){
-                return;
+                return 0;
             }
             DoublyLinkedList.dllNode doorToDoor = neighbourhood.tail;
             Neighbour doorVal = (Neighbour) doorToDoor.value;
+            int counter = 0;
             while(doorToDoor != null ){
                 doorVal = (Neighbour) doorToDoor.value;
                 doorVal.origialNodeRef.updateNeighbourhoodWeight(REMOVE,this);
                 doorVal.origialNodeRef.neighbourhood.delete(dllRef);
                 doorToDoor = doorToDoor.next;
+                counter++;
             }
+            return counter;
         }
 
     }
@@ -333,23 +337,24 @@ public class Graph {
         private int N;
         private Node[] heapArray;
         private int lastIndex;
+
         public MaxHeap(int N,Node[] nodes){
             this.N = N;
-            heapArray = nodes;
+            heapArray = new Node[N];
             this.lastIndex = heapArray.length-1;
-            setHeapIndexes();
-            findMaxAndSwap();
+            initializeHeap(nodes);
         }
         //will be used only for first insertion
         //TODO
-        private void insert(Node node){
-            int currID = node.id;
-            int currWeight = node.neighbourhoodWeight;
+        private void initializeHeap(Node[] nodes){
             int i = 0;
-            while (heapArray[i].neighbourhoodWeight > currWeight ){
+            while (i<N){
+                heapArray[i] = nodes[i];
+                nodes[i].heapIndex = i;
+                heapifyUp(heapArray[i]);
                 i++;
             }
-
+            setHeapIndexes();
         }
 
         private void findMaxAndSwap(){
