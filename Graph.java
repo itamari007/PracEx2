@@ -408,7 +408,7 @@ public class Graph {
             Node highestNW = changedNode;
             int rightSonIndex = (index*2) + 2;
             int leftSonIndex = (index*2) + 1;
-            if( rightSonIndex < lastIndex){
+            if( rightSonIndex <= lastIndex){
                 if(highestNW.neighbourhoodWeight < heapArray[rightSonIndex].neighbourhoodWeight){
                     highestNW = heapArray[rightSonIndex];
                     /**
@@ -416,7 +416,7 @@ public class Graph {
                      */
                 }
             }
-            if(leftSonIndex < lastIndex){
+            if(leftSonIndex <= lastIndex){
                 if(highestNW.neighbourhoodWeight < heapArray[leftSonIndex].neighbourhoodWeight){
                     highestNW = heapArray[leftSonIndex];
                     /**
