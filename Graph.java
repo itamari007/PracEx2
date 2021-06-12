@@ -49,6 +49,7 @@ public class Graph {
         return null;
     }
 
+
     /**
      * given a node id of a node in the graph, this method returns the neighborhood weight of that node.
      *
@@ -221,6 +222,10 @@ public class Graph {
                 counter++;
             }
             return counter;
+        }
+
+        public int getNeighbourhoodWeight(){
+            return neighbourhoodWeight;
         }
 
     }
