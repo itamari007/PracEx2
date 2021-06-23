@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Tester {
     public static void main(String[] args){
-        for(double i = 6; i<21; i++){
+        for(double i = 6; i<=21; i++){
             int N = (int)Math.pow(2,i);
             Graph.Node[] nodes = new Graph.Node[N];
             for(int j =1;j<=N;j++){

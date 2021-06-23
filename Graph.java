@@ -1,11 +1,15 @@
 /*
+    name: amos zohar, id: 311402812, username: amoszohar
+    name: itamar israelit, id:307871228, username: itamari1
+ */
+
+/*
 You must NOT change the signatures of classes/methods in this skeleton file.
 You are required to implement the methods of this skeleton file according to the requirements.
 You are allowed to add classes, methods, and members as required.
  */
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This class represents a graph that efficiently maintains the heaviest neighborhood over edge addition and
@@ -458,7 +462,7 @@ public class Graph {
             this.p=size;
             this.m = nodes.length;
             hashedIds = new DoublyLinkedList[m];
-            setHashFunctionParameters(ThreadLocalRandom.current().nextInt(1,p),new Random().nextInt(p) );
+            setHashFunctionParameters(new Random().nextInt(p-1)+1,new Random().nextInt(p) );
             populateTable(nodes);
         }
         private void populateTable(Node[] nodes){
