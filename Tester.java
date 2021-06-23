@@ -3,21 +3,20 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Tester {
     public static void main(String[] args){
-        double p = 0.5;
-        for(int i = 6; i<21; i++){
-            int N = 2^i;
+        for(double i = 6; i<21; i++){
+            int N = (int)Math.pow(2,i);
             Graph.Node[] nodes = new Graph.Node[N];
             for(int j =1;j<=N;j++){
-                int randomW = ThreadLocalRandom.current().nextInt(1,2^i);
-                nodes[j-1] = new Graph.Node(j,randomW);
+                nodes[j-1] = new Graph.Node(j,1);
             }
             Graph g = new Graph(nodes);
-            for(int j =1;j<=i;j++){
-                for(int k = j+1;k<i;k++){
-                    double res = ThreadLocalRandom.current().nextDouble(0.0,1.0);
-                    if( res >= p){
-                        g.addEdge(j,k);
-                    }
+            int counter = 0;
+            while(counter < N){
+                Random rnd = new Random();
+                int u = rnd.nextInt(N-1)+1;
+                int v = rnd.nextInt(N-1)+1;
+                if(g.addEdge(u,v)==true){
+                    counter++;
                 }
             }
             Graph.Node maxNode = g.maxNeighborhoodWeight();

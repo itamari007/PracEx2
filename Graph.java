@@ -29,7 +29,7 @@ public class Graph {
      */
     public Graph(Node [] nodes){
         this.N = nodes.length;
-        this.n = N;
+        this.n = nodes.length;
         this.m = 0;
         myTable = new MyHashtable(p,nodes);
         myMaxHeap = new MaxHeap(N,nodes);
